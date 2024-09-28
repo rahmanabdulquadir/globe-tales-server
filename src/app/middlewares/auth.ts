@@ -2,8 +2,9 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import AppError from "../errors/AppError";
-// import Authentication from "../modules/auth/auth.model";
-// import User from "../modules/user/user.model";
+import User from "../modules/user/user.model";
+import Authentication from "../modules/auth/auth.model";
+
 
 export const isAuthenticatedUser = async (
   req: any,

@@ -10,6 +10,11 @@ router.post(
   validSchema(postValidationSchema),
   postController.createPost
 );
+router.post(
+  "/upload-image",
+  isAuthenticatedUser,
+  postController.uploadPostImage
+);
 router.get("/get", postController.getAllPosts);
 router.patch("/vote/:postId", isAuthenticatedUser, postController.votePost);
 const postRoute = router;

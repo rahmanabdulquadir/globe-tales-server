@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JwtPayload } from "jsonwebtoken";
 import { catchAsyncError } from "../../../utils/catchAsyncError";
 import sendResponse from "../../../utils/sendResponse";
-import { sendImageToCloudinary } from "../../../utils/uploadFile";
 import QueryBuilder from "../../builder/QueryBuilder";
 import User from "./user.model";
 
@@ -17,8 +15,7 @@ export const updateUserProfileImage = catchAsyncError(async (req, res) => {
       statusCode: 404,
     });
   }
-  const uploadRes: any = await sendImageToCloudinary(file.filename, file.path);
-  const url = uploadRes.secure_url as string;
+  const url = file.path as string;
   if (!url) {
     return sendResponse(res, {
       message: "failed to upload image",

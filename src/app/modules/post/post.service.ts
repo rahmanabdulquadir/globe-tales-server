@@ -65,9 +65,9 @@ const getAllPosts = async (query: IAnyObject) => {
     .filter()
     .search(["title"]);
 
-  const totalDoc = (await queryModel.count()).totalCount;
+  const totalDoc = await queryModel.count();
   const result = await queryModel.modelQuery;
-  return { result, totalDoc };
+  return { result, totalDoc: totalDoc.totalCount };
 };
 
 const postService = {

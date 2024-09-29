@@ -59,21 +59,13 @@ const createPost = catchAsyncError(async (req, res) => {
 const getAllPosts = catchAsyncError(async (req, res) => {
   const query = req.query;
   const { result, totalDoc } = await postService.getAllPosts(query);
-  if (result.length > 0) {
-    return sendResponse(res, {
-      success: true,
-      statusCode: 200,
-      message: "All posts retrieved successfully",
-      data: result,
-      totalDoc,
-    });
-  }
+
   sendResponse(res, {
     success: false,
-    statusCode: 404,
+    statusCode: 200,
     message: "No Data Found",
-    data: [],
-    totalDoc: 0,
+    data: result,
+    totalDoc,
   });
 });
 

@@ -36,6 +36,14 @@ const PostSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    upvoteCount: {
+      type: Number,
+      default: 0,
+    },
+    downvoteCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

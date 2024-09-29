@@ -5,4 +5,6 @@ export interface IPost {
   categories: string;
   isPremium: boolean;
   user: string;
+  upvoteCount: number;
+  downvoteCount: number;
 }

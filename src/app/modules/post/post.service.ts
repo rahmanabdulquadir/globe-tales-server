@@ -44,14 +44,19 @@ const votePost = async (
     }
   }
 
+  // Update the upvoteCount and downvoteCount after updating the arrays
+  post.upvoteCount = post.upvotes.length;
+  post.downvoteCount = post.downvotes.length;
+
+  // Save the post after updating counts
+  await post.save();
+
   const result = await post.save();
   return result;
 };
 
 const getAllPosts = async (query: IAnyObject) => {
   const model = Post.find().populate("user").populate("categories");
-
-
 
   const queryModel = new QueryBuilder(model, query)
     .fields()

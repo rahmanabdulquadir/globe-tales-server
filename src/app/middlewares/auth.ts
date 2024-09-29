@@ -2,9 +2,8 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import AppError from "../errors/AppError";
-import User from "../modules/user/user.model";
 import Authentication from "../modules/auth/auth.model";
-
+import User from "../modules/user/user.model";
 
 export const isAuthenticatedUser = async (
   req: any,
@@ -42,7 +41,6 @@ export const isAuthenticatedUser = async (
 
     const payload = user.toObject();
     req.user = { ...payload, role: auth.role };
-    console.log(user);
 
     next();
   } catch (err: any) {

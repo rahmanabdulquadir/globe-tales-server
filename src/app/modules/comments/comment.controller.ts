@@ -23,12 +23,16 @@ const createComment = catchAsyncError(async (req, res) => {
 
 const getCommentsByPostId = catchAsyncError(async (req, res) => {
   const postId = req.params.id;
-  const result = await commentService.getCommentsByPostId(postId);
+  const { result, totalDoc } = await commentService.getCommentsByPostId(
+    postId,
+    req.query
+  );
   sendResponse(res, {
     message: "comments retrieved successfully",
     success: true,
     data: result,
     statusCode: 200,
+    totalDoc,
   });
 });
 

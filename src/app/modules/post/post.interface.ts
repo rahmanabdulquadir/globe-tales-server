@@ -7,4 +7,5 @@ export interface IPost {
   user: string;
   upvoteCount: number;
   downvoteCount: number;
+  commentCount: number;
 }

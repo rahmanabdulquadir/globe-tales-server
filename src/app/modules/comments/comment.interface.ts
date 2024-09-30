@@ -1,4 +1,3 @@
-
 export interface IComment {
   comment: string;
   post: string;

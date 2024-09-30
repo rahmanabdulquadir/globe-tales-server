@@ -17,6 +17,7 @@ export const isAuthenticatedUser = async (
       return res.status(401).json({ message: "Invalid Authentication." });
 
     const token = getToken.split(" ")[1];
+    console.log(token)
 
     if (!token) {
       return res.status(401).json({ message: "Token not provided" });

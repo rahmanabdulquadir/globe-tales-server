@@ -4,6 +4,7 @@ import userRoute from "../modules/user/user.route";
 import postRoute from '../modules/post/post.route';
 import categoryRoute from '../modules/category/category.route';
 import paymentRoute from '../modules/payment/payment.route';
+import commentRoute from '../modules/comments/comment.route';
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const moduleRoute = [
   {
     path: "/category",
     route: categoryRoute,
+  },
+  {
+    path: "/comment",
+    route: commentRoute,
   },
 ];
 

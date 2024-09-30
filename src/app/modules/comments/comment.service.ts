@@ -5,7 +5,6 @@ import Post from "../post/post.model";
 import { IComment } from "./comment.interface";
 import Comment from "./comment.model";
 
-
 const createComment = async (comment: IComment) => {
   const isPostExists = await Post.findById(comment.post);
   if (!isPostExists) {
@@ -82,7 +81,7 @@ const deleteComment = async (id: string, userId: string) => {
   }
 
   const result = await Comment.findByIdAndDelete(id);
-  isPostExists?.commentCount = isPostExists?.commentCount - 1;
+  isPostExists.commentCount = isPostExists.commentCount - 1;
   await isPostExists.save();
   return result;
 };

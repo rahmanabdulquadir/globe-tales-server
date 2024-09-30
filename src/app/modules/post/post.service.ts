@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import mongoose, { ObjectId } from "mongoose";
 import QueryBuilder from "../../builder/QueryBuilder";
+import AppError from "../../errors/AppError";
 import { IAnyObject } from "../../interface/error";
 import { IPost } from "./post.interface";
 import Post from "./post.model";
@@ -79,8 +80,22 @@ const getAllPosts = async (query: IAnyObject) => {
   return { result, totalDoc: totalDoc.totalCount };
 };
 
+const deletePost = async (id: string, user: string) => {
+  const isExists = await Post.findById(id);
+  if (!isExists) {
+    throw new AppError(404, "Post not found");
+  }
+
+  if (isExists.user.toString() !== user.toString()) {
+    throw new AppError(403, "Unauthorized access");
+  }
+
+  const result = await Post.findByIdAndDelete(isExists._id);
+  return result;
+};
 const postService = {
   createPost,
+  deletePost,
   getAllPosts,
   votePost,
 };

@@ -53,6 +53,18 @@ const createPost = catchAsyncError(async (req, res) => {
   });
 });
 
+const deletePost = catchAsyncError(async (req, res) => {
+  const { postId } = req.params;
+  const user = req.user as JwtPayload;
+  const result = await postService.deletePost(postId, user._id);
+  sendResponse(res, {
+    message: "post deleted successfully",
+    success: true,
+    data: result,
+    statusCode: 200,
+  });
+})
+
 const getAllPosts = catchAsyncError(async (req, res) => {
   const query = req.query;
   const { result, totalDoc } = await postService.getAllPosts(query);
@@ -97,7 +109,7 @@ const votePost = catchAsyncError(async (req, res) => {
 
 export const postController = {
   createPost,
-  uploadPostImage,
+  uploadPostImage,deletePost,
   getAllPosts,
   votePost,
 };

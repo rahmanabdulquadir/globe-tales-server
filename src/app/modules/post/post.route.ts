@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import { isAuthenticatedUser } from "../../middlewares/auth";
 import { validSchema } from "../../middlewares/validator";
 import { postController } from "./post.controller";
@@ -10,6 +11,12 @@ router.post(
   isAuthenticatedUser,
   validSchema(postValidationSchema),
   postController.createPost
+);
+
+router.delete(
+  "/delete/:postId",
+  isAuthenticatedUser,
+  postController.deletePost
 );
 router.post(
   "/upload-image",

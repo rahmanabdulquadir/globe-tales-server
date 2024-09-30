@@ -3,6 +3,7 @@ import { isAuthenticatedUser } from "../../middlewares/auth";
 import { validSchema } from "../../middlewares/validator";
 import { postController } from "./post.controller";
 import { postValidationSchema } from "./post.validation";
+import { multerUpload } from "../../config/cloudinaryMulter";
 const router = Router();
 router.post(
   "/create",
@@ -13,6 +14,7 @@ router.post(
 router.post(
   "/upload-image",
   isAuthenticatedUser,
+  multerUpload.single("file"),
   postController.uploadPostImage
 );
 router.get("/get", postController.getAllPosts);

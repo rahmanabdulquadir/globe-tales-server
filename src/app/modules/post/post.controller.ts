@@ -1,6 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { catchAsyncError } from "../../../utils/catchAsyncError";
 import sendResponse from "../../../utils/sendResponse";
+import { TUser } from "../user/user.interface";
 import { IPost } from "./post.interface";
 import postService from "./post.service";
 
@@ -33,14 +34,24 @@ export const uploadPostImage = catchAsyncError(async (req, res) => {
 });
 
 const createPost = catchAsyncError(async (req, res) => {
-  const { title, content, categories, isPremium, images } = req.body;
+  const { content, categories, images, premium } = req.body;
   const user = req.user._id;
+
+  if (premium && !req.user.isPremium) {
+    sendResponse(res, {
+      success: false,
+      data: null,
+      message: "you need to subscribe to premium",
+      statusCode: 400,
+    });
+    return;
+  }
+
   const payload = {
-    title,
     content,
     images,
     categories,
-    isPremium: isPremium || false,
+    premium: Boolean(premium),
     user: user as string,
   } as IPost;
   const result = await postService.createPost(payload);
@@ -63,11 +74,12 @@ const deletePost = catchAsyncError(async (req, res) => {
     data: result,
     statusCode: 200,
   });
-})
+});
 
 const getAllPosts = catchAsyncError(async (req, res) => {
   const query = req.query;
-  const { result, totalDoc } = await postService.getAllPosts(query);
+  const user = req.user as TUser | null;
+  const { result, totalDoc } = await postService.getAllPosts(query, user);
 
   sendResponse(res, {
     success: false,
@@ -109,7 +121,8 @@ const votePost = catchAsyncError(async (req, res) => {
 
 export const postController = {
   createPost,
-  uploadPostImage,deletePost,
+  uploadPostImage,
+  deletePost,
   getAllPosts,
   votePost,
 };

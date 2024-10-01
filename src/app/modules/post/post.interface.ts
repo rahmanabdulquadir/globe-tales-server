@@ -2,7 +2,7 @@ export interface IPost {
   content: string;
   images: string[];
   categories: string;
-  isPremium: boolean;
+  premium: boolean;
   user: string;
   upvoteCount: number;
   downvoteCount: number;

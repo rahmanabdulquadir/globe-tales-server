@@ -3,6 +3,7 @@ import mongoose, { ObjectId } from "mongoose";
 import QueryBuilder from "../../builder/QueryBuilder";
 import AppError from "../../errors/AppError";
 import { IAnyObject } from "../../interface/error";
+
 import { IPost } from "./post.interface";
 import Post from "./post.model";
 
@@ -56,10 +57,8 @@ const votePost = async (
   return result;
 };
 
-const getAllPosts = async (query: IAnyObject) => {
+const getAllPosts = async (query: IAnyObject, user: TUser | null) => {
   let model = Post.find().populate("user").populate("categories");
-
-  console.log(query.categories, true);
   if (query.categories) {
     const ids = query.categories
       .split(",")
@@ -67,6 +66,12 @@ const getAllPosts = async (query: IAnyObject) => {
     model = model.find({ categories: { $in: ids } });
   }
   delete query.categories;
+
+  if (query.premium && user && user.isPremium) {
+    model.find({ premium: true });
+  } else {
+    model = model.find({ premium: false });
+  }
 
   const queryModel = new QueryBuilder(model, query)
     .fields()

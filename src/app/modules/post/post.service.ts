@@ -80,6 +80,30 @@ const getAllPosts = async (query: IAnyObject) => {
   return { result, totalDoc: totalDoc.totalCount };
 };
 
+const updatePost = async (id: string, payload: IPost, user: string) => {
+  const isExists = await Post.findById(id);
+  if (!isExists) {
+    throw new AppError(404, "Post not found");
+  }
+
+  if (isExists.user.toString() !== user.toString()) {
+    throw new AppError(403, "Unauthorized access");
+  }
+
+  const updatePayload: Partial<IPost> = {};
+
+  ["content", "images", "categories"].forEach((key) => {
+    // @ts-ignore
+    if (payload[key]) {
+      // @ts-ignore
+      updatePayload[key] = payload[key];
+    }
+  });
+
+  const result = await Post.findByIdAndUpdate(id, updatePayload, { new: true });
+  return result;
+};
+
 const deletePost = async (id: string, user: string) => {
   const isExists = await Post.findById(id);
   if (!isExists) {
@@ -98,5 +122,6 @@ const postService = {
   deletePost,
   getAllPosts,
   votePost,
+  updatePost,
 };
 export default postService;

@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import { isAuthenticatedUser } from "../../middlewares/auth";
 import { validSchema } from "../../middlewares/validator";
 import { postController } from "./post.controller";

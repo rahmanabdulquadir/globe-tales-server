@@ -1,14 +1,21 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { readFileSync } from "fs";
 import { join } from "path";
+import User from "../user/user.model";
 import Payment from "./payment.model";
 
-export const createPayment = async (amount: number, transactionId: string) => {
+export const createPayment = async (
+  amount: number,
+  transactionId: string,
+  userId: string
+) => {
   await Payment.create({
     amount: amount,
     transactionId,
     status: "Paid",
+  });
+
+  await User.findByIdAndUpdate(userId, {
+    isPremium: true,
   });
 
   const filePath = join(__dirname, "../../templates/success.html");
@@ -17,13 +24,7 @@ export const createPayment = async (amount: number, transactionId: string) => {
 
   return file;
 };
-export const failedPayment = async (slot: string) => {
-  // await Booking.findOneAndUpdate({ slot }, { $set: { status: "cancel" } });
-  // await Slot.findOneAndUpdate(
-  //   { _id: slot },
-  //   { $set: { isBooked: "available" } }
-  // );
-
+export const failedPayment = async () => {
   const filePath = join(__dirname, "../../templates/error.html");
   let file = readFileSync(filePath, "utf-8");
   file = file.replace("{{link}}", "https://aqua-clean.vercel.app/");

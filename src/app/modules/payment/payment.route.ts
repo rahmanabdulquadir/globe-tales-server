@@ -7,6 +7,4 @@ const router = Router();
 router.post("/success", successPaymentController);
 router.post("/fail", failedPaymentController);
 router.get("/fail", failedPaymentController);
-
-const paymentRoute = router;
-export default paymentRoute;
+export default router;

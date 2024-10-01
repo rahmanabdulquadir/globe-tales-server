@@ -14,6 +14,6 @@ export interface IPaymentPayload {
 
 export interface IPaymentTokenInfo {
   transactionId: string;
-  slotId: string;
+  userId: string;
   amount: string;
 }

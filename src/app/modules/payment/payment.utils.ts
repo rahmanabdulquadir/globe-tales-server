@@ -1,18 +1,26 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import { IPaymentPayload } from "./payment.interface";
+import { IPaymentPayload, IPaymentTokenInfo } from "./payment.interface";
 
 export const initiatePayment = async (
   payload: IPaymentPayload,
-  slotId: string
+  userId: string
 ) => {
   const { amount, cus_add, cus_name, cus_phone, cus_email, tran_id } = payload;
 
-  const PT = jwt.sign(
-    { transactionId: tran_id, slotId, amount },
-    process.env.SIGNATURE_KEY as string,
-    { expiresIn: "1m" }
-  );
+  const paymentTokenObj: IPaymentTokenInfo = {
+    transactionId: tran_id,
+    userId,
+    amount: amount.toString(),
+  };
+
+  const PT = jwt.sign(paymentTokenObj, process.env.SIGNATURE_KEY as string, {
+    expiresIn: "1m",
+  });
+
+  // const url = "https://onthego-backend.vercel.app/api/v1"
+  const url = "http://localhost:5000/api/v1";
+
   const response = await axios.post(`${process.env.PAYMENT_URL}`, {
     store_id: process.env.STORE_ID,
     signature_key: process.env.SIGNATURE_KEY,
@@ -26,9 +34,9 @@ export const initiatePayment = async (
     currency: "BDT",
     amount,
     tran_id,
-    success_url: `https://aqua-clean-server.vercel.app//api/payment/success?pt=${PT}`,
-    fail_url: `https://aqua-clean-server.vercel.app//api/payment/fail?pt=${PT}`,
-    cancel_url: `https://aqua-clean-server.vercel.app//api/payment/fail?pt=${PT}`,
+    success_url: `${url}/payment/success?pt=${PT}`,
+    fail_url: `${url}/payment/fail?pt=${PT}`,
+    cancel_url: `${url}/payment/fail?pt=${PT}`,
     desc: "Course Fee",
     type: "json",
   });

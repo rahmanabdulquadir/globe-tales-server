@@ -6,6 +6,7 @@ import categoryRoute from '../modules/category/category.route';
 import paymentRoute from '../modules/payment/payment.route';
 import commentRoute from '../modules/comments/comment.route';
 import followerRoute from '../modules/follower/follower.route';
+import statisticsRoute from '../modules/statistics/statistics.route';
 
 const router = express.Router();
 
@@ -37,6 +38,10 @@ const moduleRoute = [
   {
     path: "/follower",
     route: followerRoute,
+  },
+  {
+    path: "/statistics",
+    route: statisticsRoute,
   },
 ];
 

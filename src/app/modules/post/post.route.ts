@@ -27,6 +27,7 @@ router.post(
   postController.uploadPostImage
 );
 router.get("/get", isAuthenticatedUserOptional, postController.getAllPosts);
+router.get("/get/:id", postController.getPostById);
 router.patch("/vote/:postId", isAuthenticatedUser, postController.votePost);
 const postRoute = router;
 

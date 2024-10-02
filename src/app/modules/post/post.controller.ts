@@ -67,7 +67,7 @@ const createPost = catchAsyncError(async (req, res) => {
 const deletePost = catchAsyncError(async (req, res) => {
   const { postId } = req.params;
   const user = req.user as JwtPayload;
-  const result = await postService.deletePost(postId, user._id);
+  const result = await postService.deletePost(postId, user as TUser);
   sendResponse(res, {
     message: "post deleted successfully",
     success: true,
@@ -87,6 +87,17 @@ const getAllPosts = catchAsyncError(async (req, res) => {
     message: "No Data Found",
     data: result,
     totalDoc,
+  });
+});
+
+const getPostById = catchAsyncError(async (req, res) => {
+  const { id } = req.params;
+  const result = await postService.getPostById(id);
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Data retrieved successfully",
+    data: result,
   });
 });
 
@@ -125,4 +136,5 @@ export const postController = {
   deletePost,
   getAllPosts,
   votePost,
+  getPostById,
 };

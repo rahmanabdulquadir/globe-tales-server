@@ -86,6 +86,13 @@ const getAllPosts = async (query: IAnyObject, user: TUser | null) => {
   return { result, totalDoc: totalDoc.totalCount };
 };
 
+const getPostById = async (id: string) => {
+  const result = await Post.findById(id)
+    .populate("user")
+    .populate("categories");
+  return result;
+};
+
 const updatePost = async (id: string, payload: IPost, user: string) => {
   const isExists = await Post.findById(id);
   if (!isExists) {
@@ -110,13 +117,17 @@ const updatePost = async (id: string, payload: IPost, user: string) => {
   return result;
 };
 
-const deletePost = async (id: string, user: string) => {
+const deletePost = async (id: string, user: TUser) => {
   const isExists = await Post.findById(id);
   if (!isExists) {
     throw new AppError(404, "Post not found");
   }
 
-  if (isExists.user.toString() !== user.toString()) {
+  if (
+    isExists.user.toString() !== user._id.toString() &&
+    user.role !== "admin"
+  ) {
+    ``;
     throw new AppError(403, "Unauthorized access");
   }
 
@@ -128,6 +139,7 @@ const postService = {
   deletePost,
   getAllPosts,
   votePost,
+  getPostById,
   updatePost,
 };
 export default postService;

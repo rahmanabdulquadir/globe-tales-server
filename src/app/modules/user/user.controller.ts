@@ -86,11 +86,9 @@ export const getAllUser = catchAsyncError(async (req, res) => {
     select: "role",
   });
 
-  const build = new QueryBuilder(query, req.query).search([
-    "firstName",
-    "lastName",
-    "email",
-  ]);
+  const build = new QueryBuilder(query, req.query)
+    .search(["firstName", "lastName", "email"])
+    .paginate();
   const totalDoc = await build.count();
   const result = await build.modelQuery;
   res.json({
@@ -113,32 +111,34 @@ export const isCapableForPremium = catchAsyncError(async (req, res) => {
   });
 });
 
-export const generateVerifyAccountPaymentUrl = catchAsyncError(async (req, res) => {
-  const user = req.user as JwtPayload;
-  const post = await Post.findOne({ user: user, upvoteCount: { $gt: 0 } });
-  if (!post) {
-    return sendResponse(res, {
-      message: "Not capled for premium",
-      success: false,
-      data: null,
-      statusCode: 404,
+export const generateVerifyAccountPaymentUrl = catchAsyncError(
+  async (req, res) => {
+    const user = req.user as JwtPayload;
+    const post = await Post.findOne({ user: user, upvoteCount: { $gt: 0 } });
+    if (!post) {
+      return sendResponse(res, {
+        message: "Not capled for premium",
+        success: false,
+        data: null,
+        statusCode: 404,
+      });
+    }
+
+    const payload: IPaymentPayload = {
+      amount: 200,
+      cus_add: "N/A",
+      cus_name: user.firstName + " " + user.lastName,
+      cus_phone: "N/A",
+      cus_email: user.email,
+      tran_id: String(Date.now()),
+    };
+
+    const result = await initiatePayment(payload, user._id);
+
+    sendResponse(res, {
+      data: result,
+      success: true,
+      message: "successfully get payment url",
     });
   }
-
-  const payload: IPaymentPayload = {
-    amount: 200,
-    cus_add: "N/A",
-    cus_name: user.firstName + " " + user.lastName,
-    cus_phone: "N/A",
-    cus_email: user.email,
-    tran_id: String(Date.now()),
-  };
-
-  const result = await initiatePayment(payload, user._id);
-
-  sendResponse(res, {
-    data: result,
-    success: true,
-    message: "successfully get payment url",
-  });
-});
+);

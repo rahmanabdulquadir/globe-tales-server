@@ -3,10 +3,9 @@ import mongoose, { ObjectId } from "mongoose";
 import QueryBuilder from "../../builder/QueryBuilder";
 import AppError from "../../errors/AppError";
 import { IAnyObject } from "../../interface/error";
-
+import { TUser } from "../user/user.interface";
 import { IPost } from "./post.interface";
 import Post from "./post.model";
-import { TUser } from "../user/user.interface";
 
 const createPost = async (payload: IPost) => {
   const result = await Post.create(payload);
@@ -73,6 +72,7 @@ const getAllPosts = async (query: IAnyObject, user: TUser | null) => {
   } else {
     model = model.find({ premium: false });
   }
+  delete query.premium;
 
   const queryModel = new QueryBuilder(model, query)
     .fields()

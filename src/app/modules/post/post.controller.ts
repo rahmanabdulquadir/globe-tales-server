@@ -1,10 +1,9 @@
 import { JwtPayload } from "jsonwebtoken";
 import { catchAsyncError } from "../../../utils/catchAsyncError";
 import sendResponse from "../../../utils/sendResponse";
-
+import { TUser } from "../user/user.interface";
 import { IPost } from "./post.interface";
 import postService from "./post.service";
-import { TUser } from "../user/user.interface";
 
 export const uploadPostImage = catchAsyncError(async (req, res) => {
   const file = req.file;

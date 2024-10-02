@@ -6,6 +6,7 @@ import { IAnyObject } from "../../interface/error";
 
 import { IPost } from "./post.interface";
 import Post from "./post.model";
+import { TUser } from "../user/user.interface";
 
 const createPost = async (payload: IPost) => {
   const result = await Post.create(payload);

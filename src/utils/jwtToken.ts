@@ -6,7 +6,7 @@ export interface ITokenPayload {
   id: string;
 }
 export const createAcessToken = (user: ITokenPayload, expires: string) => {
-  console.log(process.env.JWT_REFRESH_SECRET);
+  // console.log(process.env.JWT_REFRESH_SECRET);
 
   return jwt.sign({ user }, process.env.JWT_ACCESS_SECRET as string, {
     expiresIn: expires,

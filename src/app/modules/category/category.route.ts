@@ -11,5 +11,12 @@ router.post(
   categoryController.createCategory
 );
 
+router.delete(
+  "/delete/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  categoryController.deleteCategory
+);
+
 const categoryRoute = router;
 export default categoryRoute;

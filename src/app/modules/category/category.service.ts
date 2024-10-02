@@ -1,4 +1,5 @@
 import QueryBuilder from "../../builder/QueryBuilder";
+import AppError from "../../errors/AppError";
 import { IAnyObject } from "../../interface/error";
 import { ICategory } from "./category.interface";
 import Category from "./category.model";
@@ -30,8 +31,19 @@ const getCategoriesByName = async (name: string) => {
   return result;
 };
 
+const deleteCategory = async (id: string) => {
+  const isExists = await Category.findById(id);
+  if (!isExists) {
+    throw new AppError(404, "Category not found");
+  }
+  const result = await Category.findByIdAndDelete(isExists._id);
+  return result;
+};
+
 const categoryService = {
-  createCategory,getCategories,
+  createCategory,
+  getCategories,
   getCategoriesByName,
+  deleteCategory,
 };
 export default categoryService;

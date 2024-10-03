@@ -20,21 +20,18 @@ export const createPayment = async (
 
   const filePath = join(__dirname, "../../templates/success.html");
   let file = readFileSync(filePath, "utf-8");
-  file = file.replace("{{link}}", "https://aqua-clean.vercel.app/");
+  file = file.replace("{{link}}", "/");
 
   return file;
 };
 export const failedPayment = async () => {
   const filePath = join(__dirname, "../../templates/error.html");
   let file = readFileSync(filePath, "utf-8");
-  file = file.replace("{{link}}", "https://aqua-clean.vercel.app/");
+  file = file.replace("{{link}}", "/");
   return file;
 };
-
-
 
 export const paymentService = {
   createPayment,
   failedPayment,
-  
 };

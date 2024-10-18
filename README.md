@@ -1,6 +1,8 @@
 # Globe Tales - Travel Tips and Destination Guide
 
-### Live URL: https://globe-tales-server.vercel.app/
+### Backend Live URL: https://globe-tales-server.vercel.app/
+### Frontend Live URL: https://globe-tales-client.vercel.app/
+### Frontend Github: https://github.com/rahmanabdulquadir/globe-tales-client
 
 ### Technology used
 
